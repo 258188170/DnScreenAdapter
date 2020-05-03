@@ -2,6 +2,7 @@ package com.xiyun.dnscreenadapter;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 import java.lang.reflect.Field;
@@ -10,11 +11,12 @@ import java.lang.reflect.Field;
  * Created by WangPeng on 2020-05-02.
  */
 public class UIUtils {
+    private static final String TAG = "UIUtils";
     public static final String DEMIN_CLASS = "com.android.internal.R$dimen";
     private static volatile UIUtils mUIUtils;
     //基准参照宽高
-    public final float STANDARD_WIDTH = 720;
-    public final float STANDARD_HEIGHT = 1280;
+    public final float STANDARD_WIDTH = 1440;
+    public final float STANDARD_HEIGHT = 2344;
 
     //当前设备实际宽高
     public float displayMetricsWidth;
@@ -44,7 +46,7 @@ public class UIUtils {
         return displayMetricsWidth / STANDARD_WIDTH;
     }
 
-    public float getvertitalScaleValue() {
+    public float getVerticalScaleValue() {
         return displayMetricsHeight / STANDARD_HEIGHT;
     }
 
@@ -56,7 +58,7 @@ public class UIUtils {
         //加载当前屏幕信息
         DisplayMetrics displayMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-
+        //初始化一次
         if (displayMetricsWidth == 0.0f || displayMetricsHeight == 0.0f) {
             int systemBarHeight = getValue(mContext, "system_bar_height", 48);
             //横竖屏适配宽高处理
@@ -68,7 +70,9 @@ public class UIUtils {
                 this.displayMetricsHeight = displayMetrics.heightPixels - systemBarHeight;
 
             }
+            Log.i(TAG, "init: 当前宽-->"+displayMetricsWidth+"高-->>"+displayMetricsHeight);
         }
+
     }
 
     private int getValue(Context context, String systemId, int defValue) {
